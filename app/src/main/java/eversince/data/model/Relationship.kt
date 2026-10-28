@@ -1,4 +1,4 @@
-package eversince.data.model
+package com.eversince.data.model
 
 import java.time.LocalDate
 
