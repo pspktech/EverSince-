@@ -1,4 +1,4 @@
-package eversince.ui.screens
+package com.eversince.ui.screens
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
