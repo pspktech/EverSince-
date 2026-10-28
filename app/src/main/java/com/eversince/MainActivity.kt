@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.eversince.ui.screens.AppRoot
+import eversince.ui.screens.AppRoot
 import com.eversince.ui.theme.EverSinceTheme
 import com.eversince.viewmodel.EverSinceViewModel
 
