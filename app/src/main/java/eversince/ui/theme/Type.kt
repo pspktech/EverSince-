@@ -1,4 +1,4 @@
-package eversince.ui.theme
+package com.eversince.ui.theme
 
 import androidx.compose.material3.Typography
 
