@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "eversince" // 👈 ఇక్కడ మార్చాం
+    namespace = "com.eversince" // 👈 ఇక్కడ మార్చాం
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "eversince" // 👈 ఇక్కడ మార్చాం
+        applicationId = "com.eversince" // 👈 ఇక్కడ మార్చాం
         minSdk = 24
         targetSdk = 34
         versionCode = 1
