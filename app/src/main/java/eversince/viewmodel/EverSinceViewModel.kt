@@ -27,6 +27,8 @@ class EverSinceViewModel(application: android.app.Application) : AndroidViewMode
     private val prefs = application.getSharedPreferences("ever_since", Context.MODE_PRIVATE)
     private val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
     private val _relationship = MutableStateFlow(loadRelationship())
+    private val _onboarded = MutableStateFlow(prefs.getBoolean("onboarded", false))
+    val onboarded: StateFlow<Boolean> = _onboarded.asStateFlow()
     val relationship: StateFlow<Relationship> = _relationship.asStateFlow()
     private val _moments = MutableStateFlow(loadMoments())
     val moments: StateFlow<List<SpecialMoment>> = _moments.asStateFlow()
@@ -36,6 +38,17 @@ class EverSinceViewModel(application: android.app.Application) : AndroidViewMode
     val liveTime: StateFlow<String> = _liveTime.asStateFlow()
 
     init { startTicker() }
+
+    fun completeOnboarding(person1: String, person2: String, startDate: String) {
+        saveProfile(person1, person2, startDate)
+        prefs.edit().putBoolean("onboarded", true).apply()
+        _onboarded.value = true
+    }
+
+    fun resetOnboarding() {
+        prefs.edit().putBoolean("onboarded", false).apply()
+        _onboarded.value = false
+    }
 
     fun saveProfile(person1: String, person2: String, startDate: String) {
         val parsed = runCatching { LocalDate.parse(startDate.trim(), dateFormatter) }.getOrNull() ?: return
