@@ -12,7 +12,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
       - name: Build Debug APK
         run: gradle assembleDebug
       - uses: actions/upload-artifact@v4
