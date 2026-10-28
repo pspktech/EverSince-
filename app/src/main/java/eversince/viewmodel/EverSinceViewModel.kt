@@ -1,4 +1,4 @@
-package eversince.viewmodel
+package com.eversince.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
