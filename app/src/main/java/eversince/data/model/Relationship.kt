@@ -5,7 +5,21 @@ import java.time.LocalDate
 data class Relationship(
     val person1: String = "Madhu",
     val person2: String = "Partner",
-    // యాప్ ఓపెన్ చేయగానే కౌంటర్ పనిచేస్తుందో లేదో చూడటానికి ఒక పాత తేదీ ఇక్కడ ఇచ్చాను.
-    // మీకు నచ్చిన తేదీని ఇక్కడ పెట్టుకోవచ్చు.
-    val startDate: LocalDate = LocalDate.of(2023, 1, 1) 
+    val startDate: LocalDate = LocalDate.of(2025, 5, 27),
+    val partnerPhotoUri: String? = null
+)
+
+data class SpecialMoment(
+    val id: Long = System.currentTimeMillis(),
+    val title: String,
+    val date: LocalDate,
+    val note: String
+)
+
+data class SpecialDay(
+    val id: Long = System.currentTimeMillis(),
+    val title: String,
+    val date: LocalDate,
+    val note: String,
+    val reminderEnabled: Boolean = true
 )
