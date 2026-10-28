@@ -1,18 +1,22 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
+val releaseConfig: Properties? = rootProject.file("keystore.properties").takeIf { it.exists() }?.let { file ->
+    Properties().apply { load(file.inputStream()) }
+}
+
 android {
-    val releaseProperties = rootProject.file("keystore.properties")
-    if (releaseProperties.exists()) {
+    if (releaseConfig != null) {
         signingConfigs {
             create("release") {
-                val props = java.util.Properties().apply { load(releaseProperties.inputStream()) }
-                storeFile = rootProject.file(props.getProperty("storeFile"))
-                storePassword = props.getProperty("storePassword")
-                keyAlias = props.getProperty("keyAlias")
-                keyPassword = props.getProperty("keyPassword")
+                storeFile = rootProject.file(releaseConfig!!.getProperty("storeFile"))
+                storePassword = releaseConfig!!.getProperty("storePassword")
+                keyAlias = releaseConfig!!.getProperty("keyAlias")
+                keyPassword = releaseConfig!!.getProperty("keyPassword")
             }
         }
     }
