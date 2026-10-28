@@ -142,5 +142,29 @@ fun AppRoot(vm: EverSinceViewModel = viewModel(), onPickPartnerPhoto: () -> Unit
 
 @Composable private fun SettingsScreen(vm: EverSinceViewModel) {
     val relationship by vm.relationship.collectAsStateWithLifecycle()
-    LazyColumn(contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) { item { Text("Settings", color = SoftPeach, style = MaterialTheme.typography.labelLarge); Text("Make it yours", color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold) }; item { GlassCard { Text("Relationship", color = Color.White, fontWeight = FontWeight.Bold); Text("${relationship.person1} & ${relationship.person2}", color = SoftPeach); Text("Together since ${relationship.startDate}", color = Color.White.copy(alpha = .65f)) } }; item { GlassCard { Row(verticalAlignment = Alignment.CenterVertically) { Icon(Icons.Default.Lock, null, tint = SoftPeach); Spacer(Modifier.width(12.dp)); Column(Modifier.weight(1f)) { Text("Private by design", color = Color.White, fontWeight = FontWeight.Bold); Text("Your story is saved only on this device.", color = Color.White.copy(alpha = .65f)) } } } }; item { OutlinedButton(onClick = vm::resetOnboarding, Modifier.fillMaxWidth(), border = BorderStroke(1.dp, RosePink)) { Text("Edit onboarding details", color = SoftPeach) } } }
+    LazyColumn(contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) { item { Text("Settings", color = SoftPeach, style = MaterialTheme.typography.labelLarge); Text("Make it yours", color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold) }; item { GlassCard { Text("Relationship", color = Color.White, fontWeight = FontWeight.Bold); Text("${relationship.person1} & ${relationship.person2}", color = SoftPeach); Text("Together since ${relationship.startDate}", color = Color.White.copy(alpha = .65f)) } }; item { GlassCard { Row(verticalAlignment = Alignment.CenterVertically) { Icon(Icons.Default.Lock, null, tint = SoftPeach); Spacer(Modifier.width(12.dp)); Column(Modifier.weight(1f)) { Text("Private by design", color = Color.White, fontWeight = FontWeight.Bold); Text("Your story is saved only on this device.", color = Color.White.copy(alpha = .65f)) } } } }; item { UpdateCard() }; item { OutlinedButton(onClick = vm::resetOnboarding, Modifier.fillMaxWidth(), border = BorderStroke(1.dp, RosePink)) { Text("Edit onboarding details", color = SoftPeach) } } }
+}
+
+
+@Composable private fun UpdateCard() {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var state by remember { mutableStateOf("Not checked yet") }
+    var update by remember { mutableStateOf<UpdateInfo?>(null) }
+    var checking by remember { mutableStateOf(false) }
+    GlassCard {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Default.SystemUpdate, null, tint = SoftPeach)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) { Text("App updates", color = Color.White, fontWeight = FontWeight.Bold); Text(state, color = Color.White.copy(alpha = .65f), style = MaterialTheme.typography.bodySmall) }
+        }
+        Spacer(Modifier.height(12.dp))
+        if (update != null) Button(onClick = { ApkInstaller.download(context, update!!) }, colors = ButtonDefaults.buttonColors(containerColor = RosePink), modifier = Modifier.fillMaxWidth()) { Text("Download EverSince ${update!!.version}") }
+        else OutlinedButton(onClick = { checking = true; state = "Checking GitHub Releases…" }, enabled = !checking, modifier = Modifier.fillMaxWidth()) { Text(if (checking) "Checking…" else "Check for updates") }
+    }
+    LaunchedEffect(checking) {
+        if (checking) {
+            UpdateChecker.check().onSuccess { found -> update = found; state = if (found == null) "You’re on the latest version" else "Version ${found.version} is ready" }.onFailure { state = "Could not check right now" }
+            checking = false
+        }
+    }
 }

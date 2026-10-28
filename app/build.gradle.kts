@@ -4,6 +4,18 @@ plugins {
 }
 
 android {
+    val releaseProperties = rootProject.file("keystore.properties")
+    if (releaseProperties.exists()) {
+        signingConfigs {
+            create("release") {
+                val props = java.util.Properties().apply { load(releaseProperties.inputStream()) }
+                storeFile = rootProject.file(props.getProperty("storeFile"))
+                storePassword = props.getProperty("storePassword")
+                keyAlias = props.getProperty("keyAlias")
+                keyPassword = props.getProperty("keyPassword")
+            }
+        }
+    }
     namespace = "com.eversince" // 👈 ఇక్కడ మార్చాం
     compileSdk = 34
 
@@ -17,6 +29,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
