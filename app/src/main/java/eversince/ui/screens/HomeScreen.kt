@@ -87,7 +87,7 @@ fun AppRoot(vm: EverSinceViewModel = viewModel(), onPickPartnerPhoto: () -> Unit
     var selected by remember { mutableStateOf(0) }
     val labels = listOf("Home", "Live", "Moments", "Days", "Settings")
     val icons = listOf(Icons.Default.Home, Icons.Default.AccessTime, Icons.Default.MenuBook, Icons.Default.CalendarMonth, Icons.Default.Settings)
-    Scaffold(containerColor = Color.Transparent, bottomBar = {
+    Scaffold(modifier = Modifier.fillMaxSize(), containerColor = DeepDark, bottomBar = {
         NavigationBar(containerColor = DeepDark.copy(alpha = .96f)) {
             labels.forEachIndexed { index, label -> NavigationBarItem(selected == index, { selected = index }, icon = { Icon(icons[index], label) }, label = { Text(label) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = RosePink, selectedTextColor = SoftPeach, indicatorColor = RosePink.copy(alpha = .16f), unselectedIconColor = Color.White.copy(alpha = .55f), unselectedTextColor = Color.White.copy(alpha = .55f))) }
         }
